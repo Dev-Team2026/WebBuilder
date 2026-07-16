@@ -1,0 +1,90 @@
+@import "@puckeditor/core/puck.css";
+
+header {
+    position:absolute;
+    background-color: silver;
+    width: 100%;
+    height:75px;
+    top: 0;
+    left: 0;
+}
+
+.headerNav {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+}
+
+header h1 {
+    margin-left: 20px;
+}
+
+.landLink {
+    text-decoration: none;
+    color: black;
+}
+
+.navLink {
+    text-decoration: none;
+    color: black;
+}
+
+canvas {
+    background: white;
+    width: 1280px;
+    height: 720px;
+    border-radius: 0 0 15px 15px;
+    position: absolute;
+    z-index: -1;
+    right: 100px;
+    bottom: 25px;
+}
+
+.fileExplorer {
+    height: 770px;
+    background: silver;
+    width: 400px;
+    border-radius: 15px;
+    position: absolute;
+    z-index: -1;
+    bottom: 25px;
+    left: 50px;
+    display: flex;
+}
+
+.tabList {
+    width: 1280px;
+    height: 50px;
+    background: silver;
+    position: absolute;
+    top: 92px;
+    right: 100px;
+    border-radius: 15px 15px 0 0;
+}
+
+.addTypes {
+    display: flex;
+    flex-direction: column;
+    background: grey;
+    height: 100%;
+    width: 10%;
+    border-radius: 15px 0 0 15px;
+}
+
+.addItem {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-around;
+}
+
+.funcBtn {
+    width: 75px;
+    vertical-align: center;
+}
