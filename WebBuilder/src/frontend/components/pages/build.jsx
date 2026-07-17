@@ -1,5 +1,5 @@
 import { Render } from "@measured/puck";
-import { config } from "/home/jacob/WebstormProjects/WebBuilder/WebBuilder/src/frontend/assets/data/config.jsx";
+import { config } from "../../assets/data/config.jsx";
 
 export default function Build() {
     const data = JSON.parse(
