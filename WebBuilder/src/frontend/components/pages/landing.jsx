@@ -6,8 +6,7 @@ const Landing = () => {
             <div>
                 <h1>Landing</h1>
                 <nav>
-                <Link to="/home">Home</Link>
-                <Link to="/editor">Build</Link>
+                <p><Link to="/signUp">Sign Up</Link>   <Link to="/login">Login</Link></p>
                 </nav>
             </div>
             <div>
