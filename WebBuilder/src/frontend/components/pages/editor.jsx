@@ -1,15 +1,19 @@
 import { Puck } from "@measured/puck";
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { config } from "../../assets/data/config.jsx";
+import * as path from "node:path";
+import {exportWebsite} from "../fields/exportWebsite.jsx";
 
 const initialData = {
     content: [],
 };
 
 export default function Editor() {
+
+    const navigate = useNavigate();
+
     return (
         <div>
-            <Link to={"/build"}>Preview</Link>
         <Puck
             config={config}
             data={initialData}
@@ -20,6 +24,8 @@ export default function Editor() {
                     "page-data",
                     JSON.stringify(data)
                 );
+                navigate("/build")
+                exportWebsite(data)
             }}
         />
         </div>
