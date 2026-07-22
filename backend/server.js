@@ -7,6 +7,7 @@ import * as db from './dbFunctions.js'
 import nodeMailer from 'nodemailer'
 import 'dotenv/config';
 import validate from 'deep-email-validator'
+import fs from 'fs/promises'
 
 //Express
 const server = express()
@@ -115,5 +116,38 @@ server.post("/users", async (request, response) => {
         return response.status(201).send({message: "Registration Successful", token: jwtToken});
     } catch(error){
         response.status(500).send({message: error.message})
+    }
+})
+
+//write site data to file
+server.put("/save", async (request, response) => {
+    try {
+        const d = new Date()
+        fs.writeFile(`./sitedata/test-site.json`, JSON.stringify(request.body.content), function(err) {
+            if (err) {
+                console.log(err);
+            }
+        })
+        console.log("New file saved")
+        return response.status(201).send({message: "save endpoint reached"});
+    }
+    catch(error){
+        console.log(error.message)
+        response.status(500).send({message: error.message})
+    }
+
+})
+
+//retrieve site data from file
+server.get("/load", async (request, response) => {
+    try {
+        await fs.readFile("./sitedata/test-site.json", "utf8")
+        .then((data)=>{
+            console.log("Loaded file")
+            response.send(data)
+        })
+    }
+    catch(error){
+        console.log(error.message)
     }
 })
