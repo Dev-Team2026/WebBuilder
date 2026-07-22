@@ -4,41 +4,39 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
+import { useFormik } from "formik";
+
+const validate = (values) => {
+  const errors = {}
+  if (!values.email){
+    errors.email = 'Required'
+  } 
+  return errors
+}
 
 const LoginPg = () => {
   const navigate = useNavigate();
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: ""
+  const formik = useFormik({
+    initialValues: {password: "", email: ""},
+    validate,
+    onSubmit: async (values) => { 
+      try {
+        await axios.post("http://localhost:3000/", values)
+          .then((response)=>{
+          setLoginResponse(response.data.message);
+          if (response.status === 201)
+          {
+            navigate("/home");
+            Cookies.set("jwt-authorization", response.data.token);
+          }
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    }
   })
   const [loginResponse, setLoginResponse] = useState("")
   const [loginOption, setLoginOption] = useState("normal")
-  const handleOnChangeLogin = (e)=> {
-    setLoginData((prevData) => {
-      return{...prevData, [e.target.name]: e.target.value};
-    })
-  }
-  const handleOnSubmitLogin = (e) => {
-    e.preventDefault()
-    handleLogin()
-    setLoginData({email: "",password: ""})
-  }
-  const handleLogin = async () => {
-    try {
-      console.log("test")
-      await axios.post("http://localhost:3000/", loginData)
-        .then((response)=>{
-        setLoginResponse(response.data.message);
-        if (response.status === 201)
-        {
-          navigate("/home");
-          Cookies.set("jwt-authorization", response.data.token);
-        }
-      })
-    } catch (err) {
-      console.log(err)
-    }
-  }
   const onGoogleLoginSuccess = async (credentials) => {
     try {
       await axios
@@ -64,25 +62,26 @@ const LoginPg = () => {
         <button onClick={()=>setLoginOption("normal")} >back</button>
       </div> }
       {loginOption === "normal" && <div>
-        <form onSubmit={handleOnSubmitLogin}>
+        <form onSubmit={formik.handleSubmit}>
           <label htmlFor="email">Email: </label>
           <input
             type="text"
             name="email"
             id="email"
-            value={loginData.email}
-            onChange={handleOnChangeLogin}
+            value={formik.values.email}
+            onChange={formik.handleChange}
             placeholder="Enter email"
             required
           />
+          {formik.touched.email && formik.errors.email ? (<span>{formik.errors.email}</span>) : null}
           <br />
           <label htmlFor="password">Password: </label>
           <input
             type="password"
             name="password"
             id="password"
-            value={loginData.password}
-            onChange={handleOnChangeLogin}
+            value={formik.values.password}
+            onChange={formik.handleChange}
             placeholder="Enter password"
             required
           />
