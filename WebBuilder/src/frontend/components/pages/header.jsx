@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import { jwtDecode} from "jwt-decode";
+import { googleLogout } from '@react-oauth/google';
 
 const Heading = () => {
   const navigate =useNavigate();
@@ -27,6 +28,7 @@ const Heading = () => {
   const handleLogout = (e)=>{
     e.preventDefault()
     Cookies.remove("jwt-authorization")
+    googleLogout()
   }
   return (
         <header>
