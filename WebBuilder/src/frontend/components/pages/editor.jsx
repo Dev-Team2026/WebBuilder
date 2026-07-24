@@ -7,6 +7,13 @@ import axios from "axios";
 //hard coded site ID for testing
 const siteId = 1
 
+function TitleChange() {
+    useEffect(() => {
+        document.title = 'Editor';
+        document.body.style.overflow = "auto";
+    }, []);
+}
+
 //send site data to backend to be saved in a file
 const savePageData = async (data) =>{
    try {
@@ -23,7 +30,8 @@ const savePageData = async (data) =>{
     }
 }
 
-export default function Editor(props) {
+export default function Editor() {
+    TitleChange()
     const [loading, setLoading] = useState(true)
     const [initialData, setInitialData] = useState(null)
 

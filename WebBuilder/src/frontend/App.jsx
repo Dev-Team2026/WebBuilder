@@ -15,15 +15,14 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<Landing/>} />
-        <Route path="/signUp" element={<SignUp/>} />
-        <Route path="/login" element={<LoginPg/>} />
 
         <Route element={<Layout />} >
-          <Route path="/home" element={<Home />}/>
-          <Route path="/editor" element={<Editor/>}/>
-        </Route>
-
+          <Route path="/home" element={<Home />} />
+          <Route path="/editor" element={<Editor/>} />
           <Route path="/build" element={<Build />}/>
+          <Route path="/signUp" element={<SignUp/>} />
+          <Route path="/login" element={<LoginPg/>} />
+        </Route>
       </Routes>
     </HashRouter>
   )
