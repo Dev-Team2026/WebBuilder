@@ -43,6 +43,13 @@ export const config = {
             render: ({url}) => <img className="" src={url}/>
         },
 
+        Table: {
+          fields: {
+              rows: {type: "number"},
+              columns: {type: "number"},
+          }
+        },
+
         Text: {
             fields: {
                 text: {

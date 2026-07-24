@@ -11,7 +11,7 @@ import fs from 'fs/promises'
 
 //Express
 const server = express()
-const port = 3000
+const port = 5432
 const {EMAIL_PASSWORD, EMAIL_USER} = process.env
 
 //Middleware
@@ -109,7 +109,7 @@ server.post("/users", async (request, response) => {
         await sendEmail(email)
         const hashedPassword = await bcrypt.hash(password, 10)
         //console.log(hashedPassword)
-        //db.addUser(first_name, last_name, email, hashedPassword) 
+        db.addUser(first_name, last_name, email, hashedPassword)
         refreshUserList()
         //console.log(users)
         const jwtToken = jwt.sign({email, first_name, last_name }, "temp")
@@ -118,6 +118,57 @@ server.post("/users", async (request, response) => {
         response.status(500).send({message: error.message})
     }
 })
+
+server.post("/google-login", async (request, response) => {
+    const { first_name, last_name, email } = request.body;
+
+    try {
+        let user = users.find(
+            user => user.email.toLowerCase() === email.toLowerCase()
+        );
+
+        if (!user) {
+
+            const hashedPassword = await bcrypt.hash(
+                "GoogleSignUp",
+                10
+            );
+
+            db.addUser(
+                first_name,
+                last_name,
+                email,
+                hashedPassword
+            );
+
+            refreshUserList();
+
+            user = users.find(
+                user => user.email.toLowerCase() === email.toLowerCase()
+            );
+        }
+
+        const jwtToken = jwt.sign(
+            {
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name
+            },
+            "temp"
+        );
+
+        return response.status(201).send({
+            message: "Google Login Successful",
+            token: jwtToken
+        });
+
+    } catch(error) {
+        console.log(error);
+        return response.status(500).send({
+            message: error.message
+        });
+    }
+});
 
 //write site data to file
 server.put("/save", async (request, response) => {

@@ -1,10 +1,16 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
 import { useFormik } from "formik";
+
+function TitleChange() {
+  useEffect(() => {
+    document.title = 'Log In';
+  }, []);
+}
 
 const validate = (values) => {
   const errors = {}
@@ -15,6 +21,7 @@ const validate = (values) => {
 }
 
 const LoginPg = () => {
+  TitleChange()
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {password: "", email: ""},
@@ -35,12 +42,12 @@ const LoginPg = () => {
       }
     }
   })
+
   const [loginResponse, setLoginResponse] = useState("")
-  const [loginOption, setLoginOption] = useState("normal")
   const onGoogleLoginSuccess = async (credentials) => {
     try {
       await axios
-        .post("http://localhost:3000/", {first_name: credentials.given_name, last_name: credentials.family_name, password: "GoogleSignUp", email: credentials.email})
+        .post("http://localhost:3000/google-login",  {first_name: credentials.given_name, last_name: credentials.family_name, password: "GoogleSignUp", email: credentials.email})
         .then((response) => {
           setLoginResponse(response.data.message)
           if (response.status === 201)
@@ -54,14 +61,9 @@ const LoginPg = () => {
     }
   }
   return (
-    <div>
-      {loginResponse != "" && <p>{loginResponse}</p>}
+    <div className="logSignPage">
       <br />
-      {loginOption === "google" && <div>
-        <GoogleLogin onSuccess={(credentialResponse)=>onGoogleLoginSuccess(jwtDecode(credentialResponse.credential))} onError={()=> console.log("login failed") } />
-        <button onClick={()=>setLoginOption("normal")} >back</button>
-      </div> }
-      {loginOption === "normal" && <div>
+      <div>
         <form onSubmit={formik.handleSubmit}>
           <label htmlFor="email">Email: </label>
           <input
@@ -86,10 +88,13 @@ const LoginPg = () => {
             required
           />
           <br />
-          <button type="submit" >Login</button>
-        </form> 
-        <button onClick={()=>setLoginOption("google")} >Login With Google</button>
-      </div>}
+          <button type="submit" className="logSignBtn" >Login</button>
+        </form>
+        <div className="googleWrapper">
+          <GoogleLogin onSuccess={(credentialResponse)=>onGoogleLoginSuccess(jwtDecode(credentialResponse.credential))} onError={()=> console.log("login failed") }/>
+        </div>
+        <p>Don't have an account? <Link to="/signup">Register Here!</Link></p>
+      </div>
     </div>
   )
 }

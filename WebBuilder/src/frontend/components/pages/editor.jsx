@@ -4,6 +4,13 @@ import { config } from "../../assets/data/config.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+function TitleChange() {
+    useEffect(() => {
+        document.title = 'Editor';
+        document.body.style.overflow = "auto";
+    }, []);
+}
+
 //send site data to backend to be saved in a file
 const savePageData = async (data) =>{
    try {
@@ -17,6 +24,7 @@ const savePageData = async (data) =>{
 }
 
 export default function Editor() {
+    TitleChange()
     const [loading, setLoading] = useState(true)
     const [initialData, setInitialData] = useState(null)
 
