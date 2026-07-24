@@ -11,6 +11,16 @@ export function close()
     db.close()
 }
 
+//
+//SQLite commands (grouped by table)
+//
+
+//commands with parameters use binding
+//all ?'s are replaced in order with arguments to .get , .all , and .run functions
+
+//
+//Users
+//
 export function getAllUsers()
 {
     return db.prepare(`SELECT * FROM users`).all()
@@ -43,4 +53,45 @@ export function updateUser(id, newFName, newLName, newEmail, newPassword)
 export function deleteUser(id)
 {
     return db.prepare(`DELETE FROM Users WHERE user_id=?`).run(id)
+}
+
+//
+//Sites
+//
+export function getAllSites()
+{
+    return db.prepare(`SELECT * FROM Sites`).all()
+}
+
+export function getSiteById(id)
+{
+    return db.prepare(`SELECT * FROM Sites WHERE site_id=?`).get(id)
+}
+
+export function getSitesByOwner(ownerId)
+{
+    return db.prepare(`SELECT * FROM Sites WHERE owner=?`).all(ownerId)
+}
+
+export function addSite(name, ownerId, path)
+{
+    return db.prepare(
+        `INSERT INTO Sites (name, owner, path)
+         VALUES (?,?,?)
+        `
+    ).run(name, ownerId, path)
+}
+
+export function updateSite(id, newName, newOwnerId, newPath)
+{
+    return db.prepare(
+        `UPDATE Sites SET name=?, owner=?, path=?
+         WHERE site_id=?
+        `
+    ).run(newName, newOwnerId, newPath, id)
+}
+
+export function deleteSite(id)
+{
+    return db.prepare(`DELETE FROM Sites WHERE site_id=?`).run(id)
 }

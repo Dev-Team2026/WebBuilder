@@ -85,8 +85,9 @@ server.post("/users", async (request, response) => {
 //write site data to file
 server.put("/save", async (request, response) => {
     try {
-        const d = new Date()
-        fs.writeFile(`./sitedata/test-site.json`, JSON.stringify(request.body.content), function(err) {
+        const site = db.getSiteById(request.query.id)
+
+        fs.writeFile(`./sitedata/${site.path}`, JSON.stringify(request.body.content), function(err) {
             if (err) {
                 console.log(err);
             }
@@ -104,7 +105,9 @@ server.put("/save", async (request, response) => {
 //retrieve site data from file
 server.get("/load", async (request, response) => {
     try {
-        await fs.readFile("./sitedata/test-site.json", "utf8")
+        const site = db.getSiteById(request.query.id)
+
+        await fs.readFile(`./sitedata/${site.path}`, "utf8")
         .then((data)=>{
             console.log("Loaded file")
             response.send(data)
