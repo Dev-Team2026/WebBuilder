@@ -9,16 +9,56 @@ const setTableSlots = (amount) => {
     return slots
 }
 
-const setTableProps = (amount) => {
-    let slots = []
-    console.log(amount)
-    for (let i = 0; i < amount; i++){
-        slots.push({
-          type: "TableCard",
-          props: {},
-        })
+const setTableProps = (content, columns, rows) => {
+    let amount = columns*rows
+    let currentRow = 1, currentColumn = 1;
+    let reformatedContent = []
+    
+    if (content.length <= amount){
+      for (let i = 0; i < amount; i++){
+        let slotFilled = false
+        content.forEach(element => {
+            if (element.props.column == currentColumn && element.props.row == currentRow){
+                slotFilled = true;
+            }
+        });
+        if (!slotFilled){
+            content.push({
+              type: "TableCard",
+              props: {
+                column: currentColumn,
+                row: currentRow
+              },
+              readOnly: { column: true, row: true }
+            })
+        }
+        
+        //
+        currentColumn++;
+        if(currentColumn > columns){
+            currentColumn = 1;
+            currentRow++;
+        }
+      }
+      content.forEach(element => {
+          reformatedContent[columns*(element.props.row-1)+element.props.column-1] = element
+      });
+    } else {
+      reformatedContent = [...content]
+      let totalDeleted = 0
+      content.forEach((element, index) => {
+        //console.log(element.props.column, element.props.row)
+        if(element.props.column > columns || element.props.row > rows){
+            //console.log("passed", index)
+            reformatedContent.splice(index-totalDeleted, 1)
+            //console.log(reformatedContent)
+            totalDeleted++
+        }
+      });
+      
     }
-    return slots
+    
+    return reformatedContent
 }
 
 export const config = {
@@ -101,13 +141,13 @@ export const config = {
             resolveData: async ({props}) => {
                 if (props.columns === undefined || props.rows === undefined) {
                     return {
-                        props: {columns: 1, rows: 1, content: setTableProps(1)}
+                        props: {columns: 1, rows: 1, content: setTableProps([],1,1)}
                     }
                 }
                 return {
                     props: {
                       ...props,
-                      content: setTableProps(props.columns*props.rows),
+                      content: setTableProps(props.content, props.columns,props.rows),
                     },
                 };
             },
@@ -130,16 +170,20 @@ export const config = {
                 content: {
                     type: "slot",
                 },
-            },
-            defaultProps: {
-              content: [
-                {
-                  type: "Text",
-                  props: {
-                    text: "Pre-populated",
-                  },
+                column: {
+                    type: "number",
+                    min: 1
                 },
-              ],
+                row: {
+                    type: "number",
+                    min: 1
+                },
+            },
+            permissions: {
+              delete: false,
+              insert: false,
+              drag: false,
+              insert: false
             },
             inline: true,
             render: ({ content: Content, puck }) => (
