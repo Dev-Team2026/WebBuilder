@@ -4,16 +4,46 @@ import jwt from 'jsonwebtoken'
 import Database from 'better-sqlite3'
 import bcrypt from 'bcrypt'
 import * as db from './dbFunctions.js'
+import nodeMailer from 'nodemailer'
+import 'dotenv/config';
+import validate from 'deep-email-validator'
 import fs from 'fs/promises'
 
 //Express
 const server = express()
 const port = 3000
+const {EMAIL_PASSWORD, EMAIL_USER} = process.env
 
 //Middleware
 server.use(express.json()) //to ensure data is trasmitted as json
 server.use(express.urlencoded({ extended: true })) //to ensure data is encoded and decoded while transmission
 server.use(cors())
+
+const sendEmail = async (email)=>{
+    const transporter = nodeMailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+          user: EMAIL_USER,
+          pass: EMAIL_PASSWORD
+        },
+        tls: { //Before full deployment, remember to supply the root Certificate Authority (CA) 
+            rejectUnauthorized: false
+        }
+    })
+    try {
+        const info = await transporter.sendMail({
+          from: EMAIL_USER,
+          to: email,
+          subject: 'Registration Complete',
+          text: 'Thank you for registering'
+        })
+        //console.log(info)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 //close db connection on shutdown
 process.on('exit', () => {return db.close()})
@@ -62,19 +92,26 @@ server.post("/", async(request, response) => {
 })
 server.post("/users", async (request, response) => {
     const {first_name, last_name, email, password} = request.body
-    console.log(first_name, last_name, email, password)
+    //console.log(first_name, last_name, email, password)
     try {
-        console.log(users)
+        //console.log(users)
         const user = users.length > 0 ? users.find(user => user.email.toLowerCase() === email.toLowerCase()) : false
-        console.log(user)
+        //console.log(user)
         if (user){
             return response.status(403).send({message: "This email is already in use"})
         }
+        const res = await validate(email);
+        if (!res.valid) {
+            console.log(`The address is invalid. Reason: ${res.reason}`);
+            return response.status(404).send({message: "This email doesn't exist"})
+        }
+
+        await sendEmail(email)
         const hashedPassword = await bcrypt.hash(password, 10)
-        console.log(hashedPassword)
-        db.addUser(first_name, last_name, email, hashedPassword) 
+        //console.log(hashedPassword)
+        //db.addUser(first_name, last_name, email, hashedPassword) 
         refreshUserList()
-        console.log(users)
+        //console.log(users)
         const jwtToken = jwt.sign({email, first_name, last_name }, "temp")
         return response.status(201).send({message: "Registration Successful", token: jwtToken});
     } catch(error){

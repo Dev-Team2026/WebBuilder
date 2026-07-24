@@ -5,10 +5,23 @@ export const config = {
         Heading: {
             fields: {
                 text: {
-                    type: "text",
+                    type: "custom",
+                    render: ({ value, onChange }) => (
+                        <RichTextField
+                            value={value}
+                            onChange={onChange}
+                        />
+                    )
                 },
+                background: {
+                    type: "text",
+                }
             },
-            render: ({ text }) => <h1 className="">{text}</h1>,
+            render: ({ text, background }) => <div style={{background: `${background}`}}
+                dangerouslySetInnerHTML={{
+                    __html: text,
+                }}
+            />,
         },
 
         Subheading: {
@@ -16,8 +29,11 @@ export const config = {
                 text: {
                     type: "text",
                 },
+                background: {
+                    type: "text",
+                }
             },
-            render: ({text}) => <h3 className="">{text}</h3>
+            render: ({text, background}) => <h3 style={{background: `${background}`}} className="">{text}</h3>
         },
 
         Image: {
@@ -60,6 +76,18 @@ export const config = {
                     }}
                 />
             ),
+        },
+
+        Link : {
+            fields: {
+                text: {
+                    type: "text"
+                },
+                link: {
+                    type: "text"
+                },
+            },
+            render: ({text, link}) => <a href={link}>{text}</a>
         },
 
         Button: {

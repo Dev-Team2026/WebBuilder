@@ -1,12 +1,7 @@
 @import "@puckeditor/core/puck.css";
 
-header {
-    position:absolute;
-    background-color: silver;
-    width: 100%;
-    height:75px;
-    top: 0;
-    left: 0;
+html {
+    background: black;
 }
 
 .headerNav {
@@ -20,6 +15,7 @@ header {
 
 header h1 {
     margin-left: 20px;
+    color: black;
 }
 
 .landLink {
@@ -30,17 +26,6 @@ header h1 {
 .navLink {
     text-decoration: none;
     color: black;
-}
-
-canvas {
-    background: white;
-    width: 1280px;
-    height: 720px;
-    border-radius: 0 0 15px 15px;
-    position: absolute;
-    z-index: -1;
-    right: 100px;
-    bottom: 25px;
 }
 
 .fileExplorer {
@@ -80,11 +65,34 @@ canvas {
 }
 
 .toolbar {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .funcBtn {
-    width: 75px;
     vertical-align: center;
+}
+
+.LandingHead {
+    background: grey;
+    box-shadow: 0 5px 5px #9e9e91;
+    position:absolute;
+    width: 100%;
+    height:75px;
+    top: 0;
+    left: 0;
+}
+
+.LandingLink {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 50px;
+    bottom: 50%;
+    transform: translateY(50%);
+    gap: 5rem;
+    justify-content: space-around;
+    font-size: 26px;
 }

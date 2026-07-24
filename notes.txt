@@ -1,4 +1,3 @@
-FUCK WIX
 1: "branded style" basically the user can create a default style that is automatically applied across
 the site, making it easier to keep the site looking uniform
 2: allow for the importing of fonts
