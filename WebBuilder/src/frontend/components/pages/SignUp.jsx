@@ -1,11 +1,17 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import {useFormik} from "formik"
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
+
+function TitleChange() {
+    useEffect(() => {
+        document.title = 'Sign Up';
+    }, []);
+}
 
 const validate = (values) => {
   const errors = {}
@@ -18,6 +24,7 @@ const validate = (values) => {
 }
 
 const SignUp = () => {
+    TitleChange()
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {first_name: "", last_name: "", password: "", email: ""},
@@ -46,7 +53,7 @@ const SignUp = () => {
   const onGoogleSignUpSuccess = async (credentials) => {
     try {
       await axios
-        .post("http://localhost:3000/users", {first_name: credentials.given_name, last_name: credentials.family_name, password: "GoogleSignUp", email: credentials.email})
+        .post("http://localhost:3000/google-login", {first_name: credentials.given_name, last_name: credentials.family_name, email: credentials.email})
         .then((response) => {
           setUserPostResponse(response.data.message)
           if (response.status === 201)
@@ -60,56 +67,56 @@ const SignUp = () => {
     }
   }
   return (
-    <div>
-      {userPostResponse != "" && <p>{userPostResponse}</p>}
-      {signUpOption === "google" && <div>
-        <GoogleLogin onSuccess={(credentialResponse)=>onGoogleSignUpSuccess(jwtDecode(credentialResponse.credential))} onError={()=> console.log("login failed") } />
-        <button onClick={()=>setSignUpOption("normal")} >back</button>
-      </div> }
-    {signUpOption === "normal" && <div>
+    <div className="logSignPage">
       <form onSubmit={formik.handleSubmit}>
-        <input 
-          type="text"
-          id="first_name"
-          name="first_name"
-          placeholder="First Name"
-          value={formik.values.first_name}
-          onChange={formik.handleChange}
+        <label htmlFor="first_name">First Name</label>
+        <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            placeholder="First Name"
+            value={formik.values.first_name}
+            onChange={formik.handleChange}
         />
-        <br />
-        <input 
-          type="text"
-          id="last_name"
-          name="last_name"
-          placeholder="Last Name"
-          value={formik.values.last_name}
-          onChange={formik.handleChange}
+        <br/>
+        <label htmlFor="last_name">Last Name</label>
+        <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            placeholder="Last Name"
+            value={formik.values.last_name}
+            onChange={formik.handleChange}
         />
-        <br />
-        <input 
-          type="text"
-          id="email"
-          name="email"
-          placeholder="Email Address"
-          value={formik.values.email}
-          onChange={formik.handleChange}
+        <br/>
+        <label htmlFor="email">Email</label>
+        <input
+            type="text"
+            id="email"
+            name="email"
+            placeholder="Email Address"
+            value={formik.values.email}
+            onChange={formik.handleChange}
         />
         {formik.touched.email && formik.errors.email ? (<span>{formik.errors.email}</span>) : null}
-        <br />
-        <input 
-          type="text"
-          id="password"
-          name="password"
-          placeholder="Password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
+        <br/>
+        <label htmlFor="password">Password</label>
+        <input
+            type="text"
+            id="password"
+            name="password"
+            placeholder="Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
         />
-        <br />
-        <button type="submit">Register</button>
+        <br/>
+        <button type="submit" className="logSignBtn">Register</button>
       </form>
-      <button onClick={()=>setSignUpOption("google")} >Signup With Google</button>
-      </div>}
-    </div>
+      <div className="googleWrapper">
+        <GoogleLogin onSuccess={(credentialResponse)=>onGoogleSignUpSuccess(jwtDecode(credentialResponse.credential))} onError={()=> console.log("login failed") } />
+      </div>
+      <p>Already have an account? <Link to="/login">Log In</Link> Instead</p>
+      </div>
   )
 }
 
