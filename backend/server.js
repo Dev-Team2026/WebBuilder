@@ -11,7 +11,7 @@ import fs from 'fs/promises'
 
 //Express
 const server = express()
-const port = 5432
+const port = 3000
 const {EMAIL_PASSWORD, EMAIL_USER} = process.env
 
 //Middleware
