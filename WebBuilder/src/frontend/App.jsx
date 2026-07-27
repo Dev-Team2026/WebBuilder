@@ -24,7 +24,7 @@ function App() {
 
         <Route element={<Layout />} >
           <Route path="/home" element={<Home AuthenticationChecker={AuthenticationChecker} currentUser={currentUser} updateUser={updateUser} />} />
-          <Route path="/editor" element={<Editor/>} />
+          <Route path="/editor" element={<Editor AuthenticationChecker={AuthenticationChecker} updateUser={updateUser} />} />
           <Route path="/build" element={<Build />}/>
           <Route path="/signUp" element={<SignUp/>} />
           <Route path="/login" element={<LoginPg/>} />
