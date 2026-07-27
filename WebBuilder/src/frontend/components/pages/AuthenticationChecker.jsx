@@ -13,7 +13,7 @@ const AuthenticationChecker = ({updateUser}) => {
     }
     try{
         const decodedToken = jwtDecode(jwtToken);
-        return [decodedToken.first_name, decodedToken.last_name, decodedToken.email];
+        return [decodedToken.first_name, decodedToken.last_name, decodedToken.email, decodedToken.user_id];
     }catch{
         return "";
     }
