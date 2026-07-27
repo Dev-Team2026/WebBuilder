@@ -10,36 +10,12 @@ function TitleChange() {
     }, []);
 }
 
-const Home = () => {
+const Home = ({currentUser, updateUser, AuthenticationChecker}) => {
     TitleChange();
-
-    const navigate =useNavigate();
-
-    const [currentUser] = useState(()=>{
-
-        const jwtToken = Cookies.get("jwt-authorization");
-
-        if (!jwtToken)
-        {
-            return "";
-        }
-        try{
-            const decodedToken = jwtDecode(jwtToken);
-            return [decodedToken.first_name, decodedToken.last_name, decodedToken.email];
-        }catch{
-            return "";
-        }
-    });
-
-    useEffect(()=>{
-        if (!currentUser)
-        {
-            navigate("/");
-        }
-    })
 
     return (
         <div className="userDash">
+            <AuthenticationChecker updateUser={updateUser} />
             <div className="dashBoard">
                 <h2>Hello {currentUser[0]} {currentUser[1]}</h2>
                 <div className="prevWebs">

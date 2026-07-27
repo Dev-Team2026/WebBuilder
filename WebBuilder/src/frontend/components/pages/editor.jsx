@@ -30,7 +30,7 @@ const savePageData = async (data) =>{
     }
 }
 
-export default function Editor() {
+export default function Editor({updateUser, AuthenticationChecker}) {
     TitleChange()
     const [loading, setLoading] = useState(true)
     const [initialData, setInitialData] = useState(null)
@@ -64,6 +64,7 @@ export default function Editor() {
     if(loading) return (<div>Loading</div>)
     return (
         <div>
+            <AuthenticationChecker updateUser={updateUser} />
             <Link to={"/build"}>Preview</Link>
         <Puck
             config={config}
