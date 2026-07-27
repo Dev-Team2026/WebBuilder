@@ -17,7 +17,6 @@ const Heading = () => {
             <h1><Link className="headLink" to="/">WebMaker App but in a header</Link></h1>
             <nav className="headerNav">
                 <Link className="navLink" to="/home">Home</Link>
-                <Link className="navLink" to="/editor">Build</Link>
                 <button className="logOutBtn" onClick={handleLogout}>Logout</button>
             </nav>
         </header>
