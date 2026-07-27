@@ -1,11 +1,8 @@
 import { Puck } from "@measured/puck";
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { config } from "../../assets/data/config.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-//hard coded site ID for testing
-const siteId = 1
 
 function TitleChange() {
     useEffect(() => {
@@ -15,7 +12,7 @@ function TitleChange() {
 }
 
 //send site data to backend to be saved in a file
-const savePageData = async (data) =>{
+const savePageData = async (siteId, data) =>{
    try {
         await axios.put("http://localhost:3000/save",data,{
             params: {
@@ -35,8 +32,9 @@ export default function Editor({updateUser, AuthenticationChecker}) {
     const [loading, setLoading] = useState(true)
     const [initialData, setInitialData] = useState(null)
 
-    //const location = useLocation();
-    //const siteId = location.state.siteId;
+    //retreive siteId from link prop
+    const location = useLocation();
+    const siteId = location.state.siteId;
 
     //load inital data for puck editor
     useEffect(() => {
@@ -70,8 +68,7 @@ export default function Editor({updateUser, AuthenticationChecker}) {
             config={config}
             data={initialData}
             onPublish={(data) => {
-                //
-                savePageData(data)
+                savePageData(siteId, data)
             }}
         />
         </div>

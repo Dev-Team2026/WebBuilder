@@ -84,7 +84,7 @@ server.post("/", async(request, response) => {
         {
             return response.status(403).send({message: "Incorrect credentials"})
         }
-        const jwtToken = jwt.sign({email, first_name: user.first_name, last_name: user.last_name }, "temp")
+        const jwtToken = jwt.sign({email, first_name: user.first_name, last_name: user.last_name, user_id : user.user_id }, "temp")
         return response.status(201).send({message: "User Authenticated", token: jwtToken})
     }catch(err){
         response.status(500).send({message: err.message})
@@ -205,3 +205,15 @@ server.get("/load", async (request, response) => {
         console.log(error.message)
     }
 })
+
+//retrieve site list
+server.get("/list", async (request, response) => {
+    try {
+        const sites = db.getSitesByOwner(request.query.id)
+        response.send(sites)
+    }
+    catch(error){
+        console.log(error.message)
+    }
+})
+
