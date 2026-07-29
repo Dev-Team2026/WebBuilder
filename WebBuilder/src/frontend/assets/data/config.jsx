@@ -1,4 +1,5 @@
 import RichTextField from "../../components/fields/RichTextField.jsx";
+import TableField from "../../components/fields/TableField.jsx";
 
 const setTableSlots = (amount) => {
     let slots = ""
@@ -59,6 +60,13 @@ const setTableProps = (content, columns, rows) => {
     }
     
     return reformatedContent
+}
+
+const deleteColumn = () => {
+    console.log("test")
+}
+const deleteRow = () => {
+    console.log("test")
 }
 
 export const config = {
@@ -129,14 +137,44 @@ export const config = {
                     type: "slot",
                     allow: [],
                 },
-                columns: {
-                    type: "number",
-                    min: 1
-                },
-                rows: {
-                    type: "number",
-                    min: 1
-                },
+                //columns: {
+                //    type: "number",
+                //    min: 1
+                //},
+                //rows: {
+                //    type: "number",
+                //    min: 1
+                //},
+                //targetedDelete: {
+                //    type: "custom",
+                //    render: ({puck:{props}}) => (
+                //        <TableField props={props} rows={props.rows} deleteRow={deleteRow} columns={props.columns} deleteColumn={deleteColumn()} />
+                //    )
+                //}
+            },
+            resolveFields: (data)=>{
+                const fields = {
+                    columns: {
+                        type: "number",
+                        min: 1
+                    },
+                    rows: {
+                        type: "number",
+                        min: 1
+                    }
+                }
+                if (data.props.rows === 2){
+                    console.log("test again", data.props.rows)
+                }
+                return {
+                    ...fields,
+                    targetedDelete: {
+                        type: "custom",
+                        render: ({columns, rows}) => (
+                            <TableField rows={3} deleteRow={deleteRow} columns={columns} deleteColumn={()=>{deleteColumn()}} />
+                        )
+                    }
+                }
             },
             resolveData: async ({props}) => {
                 if (props.columns === undefined || props.rows === undefined) {
