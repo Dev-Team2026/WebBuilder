@@ -4,6 +4,13 @@ import { config } from "../../assets/data/config.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+function TitleChange() {
+    useEffect(() => {
+        document.title = 'Editor';
+        document.body.style.overflow = "auto";
+    }, []);
+}
+
 //send site data to backend to be saved in a file
 const savePageData = async (data) =>{
    try {
@@ -16,7 +23,8 @@ const savePageData = async (data) =>{
     }
 }
 
-export default function Editor() {
+export default function Editor({updateUser, AuthenticationChecker}) {
+    TitleChange()
     const [loading, setLoading] = useState(true)
     const [initialData, setInitialData] = useState(null)
 
@@ -41,6 +49,7 @@ export default function Editor() {
     if(loading) return (<div>Loading</div>)
     return (
         <div>
+            <AuthenticationChecker updateUser={updateUser} />
             <Link to={"/build"}>Preview</Link>
         <Puck
             config={config}

@@ -1,8 +1,0 @@
-FUCK WIX
-1: "branded style" basically the user can create a default style that is automatically applied across
-the site, making it easier to keep the site looking uniform
-2: allow for the importing of fonts
-3: fluid element placement or spacer elements
-4: multiple pages
-5: build some framework for if they want user submissions in their site
-6: grouping elements
