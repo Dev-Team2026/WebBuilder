@@ -221,6 +221,7 @@ export const config = {
                   }}
                 />
             ),
+        },
         Link : {
             fields: {
                 text: {
