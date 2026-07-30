@@ -251,30 +251,3 @@ export const config = {
         },
     },
 };
-/*
-Table: {
-            fields: {
-                text: {
-                    type: "custom",
-                    render: ({ value, onChange }) => (
-                        <TableField
-                            value={value}
-                            onChange={onChange}
-                        />
-                    ),
-                },
-            },
-
-            defaultProps: {
-                text: "<table> <tr><th>head</th><th>head</th></tr> <tr><td>body</td><td>body</td></tr> </table>",
-            },
-
-            render: ({ text }) => (
-                <div
-                    dangerouslySetInnerHTML={{
-                        __html: text,
-                    }}
-                />
-            ),
-        },
-*/
