@@ -210,24 +210,117 @@ body {
 }
 
 .userDash {
-    width: 100%;
+    min-height: 100vh;
+    padding-top: 100px;
 }
 
+
 .dashBoard {
-    padding: 10px;
-    width: 75%;
-    margin: 200px auto;
-    text-align: center;
-    background: silver;
-    border-radius: 50px;
-    height: 500px;
+    width: 80%;
+    max-width: 1200px;
+    margin: auto;
+
+    background: whitesmoke;
+    border-radius: 30px;
+
+    padding: 40px;
+
+    box-shadow:
+            0 10px 30px rgba(0,0,0,.15);
+}
+
+
+.dashHeader {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:40px;
+}
+
+
+.dashHeader h2 {
+    margin:0;
+    font-size:32px;
+}
+
+
+.dashHeader p {
+    color:#777;
+}
+
+
+.createWebsite {
+    display:flex;
+    gap:15px;
+}
+
+.createWebsite input {
+    width: 250px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    padding: 12px 20px;
+    outline: none;
+}
+
+.createWebsite button {
+
+    background:silver;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.createWebsite button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
 }
 
 .prevWebs {
-    background: grey;
-    width: 30%;
-    height: 70%;
-    border-radius: 50px;
-    padding: 5px;
-    margin-left: 15px;
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    height: auto;
+}
+
+.prevWebs h3 {
+    margin-top: 0;
+}
+
+.webGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+    gap: 20px;
+}
+
+.webList {
+    background: silver;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.webList:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+}
+
+.webBtn {
+    background: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 15px;
+    cursor: pointer;
+}
+
+.webBtn:hover {
+    background: #e74c3c;
 }

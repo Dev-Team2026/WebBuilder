@@ -15,7 +15,7 @@ const port = 3000
 const {EMAIL_PASSWORD, EMAIL_USER} = process.env
 
 //Middleware
-server.use(express.json()) //to ensure data is trasmitted as json
+server.use(express.json()) //to ensure data is transmitted as json
 server.use(express.urlencoded({ extended: true })) //to ensure data is encoded and decoded while transmission
 server.use(cors())
 
@@ -28,7 +28,7 @@ const sendEmail = async (email)=>{
           user: EMAIL_USER,
           pass: EMAIL_PASSWORD
         },
-        tls: { //Before full deployment, remember to supply the root Certificate Authority (CA) 
+        tls: { //Before full deployment, remember to supply the root Certificate Authority (CA)
             rejectUnauthorized: false
         }
     })
@@ -53,12 +53,71 @@ process.on('SIGINT', () => {
     process.exit()
 })
 
+server.post("/websites", (req, res) => {
+    const { user_id, website_name, website_data } = req.body;
+
+    try {
+        const result = db.addWebsite(
+            user_id,
+            website_name,
+            JSON.stringify(website_data)
+        );
+
+        res.status(201).json({
+            message: "Website created",
+            website_id: result.lastInsertRowid
+        });
+
+    } catch(error) {
+        console.log(error.message);
+
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+
+server.get("/websites/:user_id", (req, res) => {
+    try {
+        const websites = db.getWebsitesByUser(req.params.user_id);
+
+        res.json(websites);
+
+    } catch(error) {
+        console.log(error.message);
+
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+
+server.get("/websites/data/:id", (req, res) => {
+    try {
+        const website = db.getWebsiteById(req.params.id);
+
+        if (!website) {
+            return res.status(404).json({
+                error: "Website not found"
+            });
+        }
+
+        res.json(website);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: err.message
+        });
+    }
+});
+
 let users = db.getAllUsers()
 const refreshUserList= () => {
     users =  db.getAllUsers()
 }
 
-server.listen(port, () => {
+server.listen(port, "0.0.0.0", () => {
       console.log(`Database is connected\nServer is listening on ${port}`)
       console.log(new Date(Date.now()))
     });
@@ -84,12 +143,13 @@ server.post("/", async(request, response) => {
         {
             return response.status(403).send({message: "Incorrect credentials"})
         }
-        const jwtToken = jwt.sign({email, first_name: user.first_name, last_name: user.last_name }, "temp")
+        const jwtToken = jwt.sign({user_id: user.user_id, email: user.email, first_name: user.first_name, last_name: user.last_name }, "temp")
         return response.status(201).send({message: "User Authenticated", token: jwtToken})
     }catch(err){
         response.status(500).send({message: err.message})
     }
 })
+
 server.post("/users", async (request, response) => {
     const {first_name, last_name, email, password} = request.body
     //console.log(first_name, last_name, email, password)
@@ -109,10 +169,10 @@ server.post("/users", async (request, response) => {
         await sendEmail(email)
         const hashedPassword = await bcrypt.hash(password, 10)
         //console.log(hashedPassword)
-        db.addUser(first_name, last_name, email, hashedPassword)
+        const result = db.addUser(first_name, last_name, email, hashedPassword)
         refreshUserList()
         //console.log(users)
-        const jwtToken = jwt.sign({email, first_name, last_name }, "temp")
+        const jwtToken = jwt.sign({user_id: result.lastInsertRowid, email, first_name, last_name }, "temp")
         return response.status(201).send({message: "Registration Successful", token: jwtToken});
     } catch(error){
         response.status(500).send({message: error.message})
@@ -134,7 +194,7 @@ server.post("/google-login", async (request, response) => {
                 10
             );
 
-            db.addUser(
+            const result = db.addUser(
                 first_name,
                 last_name,
                 email,
@@ -150,6 +210,7 @@ server.post("/google-login", async (request, response) => {
 
         const jwtToken = jwt.sign(
             {
+                user_id: user.user_id,
                 email: user.email,
                 first_name: user.first_name,
                 last_name: user.last_name
@@ -171,34 +232,13 @@ server.post("/google-login", async (request, response) => {
 });
 
 //write site data to file
-server.put("/save", async (request, response) => {
-    try {
-        const d = new Date()
-        fs.writeFile(`./sitedata/test-site.json`, JSON.stringify(request.body.content), function(err) {
-            if (err) {
-                console.log(err);
-            }
-        })
-        console.log("New file saved")
-        return response.status(201).send({message: "save endpoint reached"});
-    }
-    catch(error){
-        console.log(error.message)
-        response.status(500).send({message: error.message})
-    }
+server.put("/websites/:id", (req, res) => {
+    const result = db.updateWebsiteData(
+        req.params.id,
+        req.body.website_data
+    );
 
-})
-
-//retrieve site data from file
-server.get("/load", async (request, response) => {
-    try {
-        await fs.readFile("./sitedata/test-site.json", "utf8")
-        .then((data)=>{
-            console.log("Loaded file")
-            response.send(data)
-        })
-    }
-    catch(error){
-        console.log(error.message)
-    }
-})
+    res.json({
+        message: "Website saved"
+    });
+});

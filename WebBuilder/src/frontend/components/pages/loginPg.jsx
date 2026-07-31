@@ -21,7 +21,9 @@ const validate = (values) => {
 }
 
 const LoginPg = () => {
+
   TitleChange()
+
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {password: "", email: ""},
@@ -60,9 +62,11 @@ const LoginPg = () => {
       console.log(error.message)
     }
   }
+
   return (
     <div className="logSignPage">
       <br />
+
       <div>
         <form onSubmit={formik.handleSubmit}>
           <label htmlFor="email">Email: </label>
@@ -75,8 +79,11 @@ const LoginPg = () => {
             placeholder="Enter email"
             required
           />
+
           {formik.touched.email && formik.errors.email ? (<span>{formik.errors.email}</span>) : null}
+
           <br />
+
           <label htmlFor="password">Password: </label>
           <input
             type="password"
@@ -87,9 +94,12 @@ const LoginPg = () => {
             placeholder="Enter password"
             required
           />
+
           <br />
+
           <button type="submit" className="logSignBtn" >Login</button>
         </form>
+
         <div className="googleWrapper">
           <GoogleLogin onSuccess={(credentialResponse)=>onGoogleLoginSuccess(jwtDecode(credentialResponse.credential))} onError={()=> console.log("login failed") }/>
         </div>

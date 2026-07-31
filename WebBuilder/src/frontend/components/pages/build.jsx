@@ -16,7 +16,7 @@ export default function Build() {
                     setInitialData({content : response.data})
                     setLoading(false)
                 })
-            } 
+            }
             catch(error) {
                 console.log(error.message)
             }

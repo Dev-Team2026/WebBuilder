@@ -13,9 +13,12 @@ const Landing = () => {
     const handleClick = () => {
         navigate("/signup")
     }
+
     TitleChange();
+
     return (
         <div>
+
             <div className="LandingHead">
                 <h1>Landing</h1>
                 <nav className="LandingLink">
@@ -23,6 +26,7 @@ const Landing = () => {
                     <Link className="navLink" to="/login">Login</Link>
                 </nav>
             </div>
+
             <div className="landingCenter">
                 <h2>BrightPath Web Builder</h2>
                 <p>Web Builder allows you to create websites by simply dragging and dropping.</p>
@@ -34,6 +38,7 @@ const Landing = () => {
                 </ul>
                 <button className="landingBtn" onClick={handleClick}>Get Started!</button>
             </div>
+
         </div>
     )
 }

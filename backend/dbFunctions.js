@@ -44,3 +44,44 @@ export function deleteUser(id)
 {
     return db.prepare(`DELETE FROM Users WHERE user_id=?`).run(id)
 }
+
+export function addWebsite(id, website_name, website_data) {
+    return db.prepare(
+        `INSERT INTO websites (user_id, website_name, website_data)
+            VALUES (?,?,?)`
+    ).run(id, website_name, website_data)
+}
+
+export function getWebsitesByUser(user_id) {
+    const stmt = db.prepare(
+        `SELECT * FROM websites WHERE user_id = ?`
+    );
+
+    return stmt.all(user_id);
+}
+
+export function getWebsiteById(id) {
+    return db.prepare(
+        "SELECT * FROM websites WHERE website_id = ?"
+    ).get(id);
+}
+
+export function updateWebsiteData(id, data) {
+    return db.prepare(`
+        UPDATE websites
+        SET website_data = ?
+        WHERE website_id = ?
+    `).run(data, id);
+}
+
+export function getUserByEmail(email){
+
+    return db.prepare(
+        `
+        SELECT *
+        FROM users
+        WHERE LOWER(email)=LOWER(?)
+        `
+    ).get(email)
+
+}

@@ -36,18 +36,34 @@ export const config = {
             render: ({text, background}) => <h3 style={{background: `${background}`}} className="">{text}</h3>
         },
 
+        Video: {
+            fields: {
+                url: {
+                    type: "text",
+                },
+            },
+            render: ({url}) => <embed
+                src={url}
+                wmode="transparent"
+                type="video/mp4"
+                width="100%" height="100%"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen
+                title="Keyboard Cat"/>
+        },
+
         Image: {
             fields: {
-                url: { type: "text" },
+                url: {type: "text"},
             },
             render: ({url}) => <img className="" src={url}/>
         },
 
         Table: {
-          fields: {
-              rows: {type: "number"},
-              columns: {type: "number"},
-          }
+            fields: {
+                rows: {type: "number"},
+                columns: {type: "number"},
+            }
         },
 
         Text: {
