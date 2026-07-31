@@ -249,8 +249,25 @@ export const config = {
                 </a>
             ),
         },
+        
+        EmbeddedVideo: {
+            fields: {
+                videoUrl: {
+                    type: "text",
+                },
+            },
+            render: ({videoUrl}) => (
+                <iframe width="560" height="315" 
+                src=  {videoUrl}
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
+                clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            ),
+        },
     },
 };
+
+
 /*
 Table: {
             fields: {
