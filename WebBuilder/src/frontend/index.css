@@ -1,12 +1,21 @@
 @import "@puckeditor/core/puck.css";
 
-header {
-    position:absolute;
-    background-color: silver;
+html {
+    background: white;
+}
+
+body {
+    margin-top: 100px;
+}
+
+.normHeader {
+    position: absolute;
     width: 100%;
-    height:75px;
+    height: 75px;
     top: 0;
     left: 0;
+    background: whitesmoke;
+    box-shadow: 0 5px 5px #9e9e91;
 }
 
 .headerNav {
@@ -18,8 +27,10 @@ header {
     gap: 5rem;
 }
 
-header h1 {
+.headLink {
     margin-left: 20px;
+    color: black;
+    text-decoration: none;
 }
 
 .landLink {
@@ -30,17 +41,6 @@ header h1 {
 .navLink {
     text-decoration: none;
     color: black;
-}
-
-canvas {
-    background: white;
-    width: 1280px;
-    height: 720px;
-    border-radius: 0 0 15px 15px;
-    position: absolute;
-    z-index: -1;
-    right: 100px;
-    bottom: 25px;
 }
 
 .fileExplorer {
@@ -80,11 +80,154 @@ canvas {
 }
 
 .toolbar {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .funcBtn {
-    width: 75px;
     vertical-align: center;
+}
+
+.LandingHead {
+    background: whitesmoke;
+    box-shadow: 0 5px 5px #9e9e91;
+    position:absolute;
+    width: 100%;
+    height:75px;
+    top: 0;
+    left: 0;
+}
+
+.LandingHead h1 {
+    margin-left: 20px;
+}
+
+.LandingLink {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 50px;
+    bottom: 50%;
+    transform: translateY(50%);
+    gap: 5rem;
+    justify-content: space-around;
+    font-size: 16px;
+}
+
+.landingCenter {
+    padding: 10px;
+    text-align: center;
+    margin: 250px auto;
+    height: 500px;
+    width: 50%;
+    border-radius: 50px;
+    background: whitesmoke;
+    box-shadow: 1px 1px 5px 5px floralwhite;
+}
+
+.landingBtn {
+    margin-top: 50px;
+    width: 200px;
+    height: 50px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: white;
+    background: silver;
+    border: 0;
+    transition: background .25s, transform .25s, box-shadow .25s;
+}
+
+.landingBtn:hover {
+    cursor: pointer;
+    background: grey;
+    transition: background .25s, transform .25s, box-shadow .25s;
+    transform: translateY(-5px);
+}
+
+.logSignPage {
+    display: flex;
+    flex-direction: column;
+    margin: 150px auto;
+    width: 350px;
+    padding: 40px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    background: whitesmoke;
+    height: auto;
+    min-height: 300px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.logSignPage form {
+    display: flex;
+    flex-direction: column;
+}
+
+.logSignPage input {
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid grey;
+    outline: none;
+}
+
+.googleWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.logSignBtn {
+    border-radius: 20px;
+    height: 30px;
+    width: 50%;
+    margin: auto;
+    transition: background .25s, transform .25s, box-shadow .25s;
+    border: 1px solid grey;
+    background: white;
+}
+
+.logSignBtn:hover {
+    cursor: pointer;
+    background: grey;
+    transform: translateY(-2px);
+    transition: background .25s, transform .25s, box-shadow .25s;
+}
+
+.logOutBtn {
+    border: none;
+    background: none;
+    font-size: 16px;
+}
+
+.logOutBtn:hover {
+    cursor: pointer;
+}
+
+.userDash {
+    width: 100%;
+}
+
+.dashBoard {
+    padding: 10px;
+    width: 75%;
+    margin: 200px auto;
+    text-align: center;
+    background: silver;
+    border-radius: 50px;
+    height: 500px;
+}
+
+.prevWebs {
+    background: grey;
+    width: 30%;
+    height: 70%;
+    border-radius: 50px;
+    padding: 5px;
+    margin-left: 15px;
 }
